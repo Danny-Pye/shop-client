@@ -1,24 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
+import './App.scss';
+import {Product} from "./interfaces/product";
+
+// const dummyList = [];
 
 function App() {
+  const [list, setList] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const {data} = await axios.get('http://localhost:5000/api/products');
+      setList(data);
+      console.log(data);
+    };
+    fetchData();
+
+    // fetch('http://localhost:5000/api/products')
+    //     .then(response => response.json())
+    //     .then(data => {
+    //       setList(data);
+    //       console.log(data);
+    //     });
+
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>HI</h1>
+        <ul>
+        {list.map((item) => (<li key={item.id}>{item.name}</li>))}
+
+        </ul>
     </div>
   );
 }
